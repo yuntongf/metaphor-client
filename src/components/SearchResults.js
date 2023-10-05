@@ -11,8 +11,9 @@ const SearchResults = ({ results, handleAddEvent}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [details, setDetails] = useState([]);
     
+    
     useEffect(
-    () => {
+      () => {
         const fetchData = async () => {
             const promises = results.map(async (result) => {
               const response = await http.get(`/event?id=${result.id}`);
@@ -22,8 +23,9 @@ const SearchResults = ({ results, handleAddEvent}) => {
             const responseData = await Promise.all(promises);
             setDetails(responseData);
           };
-        
-          fetchData();
+          if (results.length > 0) {
+            fetchData();
+          }
     }, [results]
     )
     
@@ -49,7 +51,8 @@ const SearchResults = ({ results, handleAddEvent}) => {
     };
   
     const formatScore = (score) => {
-      return score.toFixed(2); // Format the score with two decimal places
+      const mul = score * 10;
+      return mul.toFixed(2); // Format the score with two decimal places
     };
   
     return (
@@ -72,7 +75,10 @@ const SearchResults = ({ results, handleAddEvent}) => {
                 </h3>
               </div>
               <p></p>
-              {details.length > 0 ? <Details details={details} currentIndex={currentIndex} handleAddEvent={handleAddEvent}/>
+              {details.length > 0 ? 
+                <>
+                  <Details details={details} currentIndex={currentIndex} handleAddEvent={handleAddEvent}/>
+                </>
               : <div> loading details for you... </div>}
             </div>
             <button
@@ -84,7 +90,7 @@ const SearchResults = ({ results, handleAddEvent}) => {
             </button>
           </div>
         ) : (
-          <p>No components to display.</p>
+          <p>Loading events for you...</p>
         )}
       </div>
     );

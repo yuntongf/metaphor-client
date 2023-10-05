@@ -27,7 +27,7 @@
   }
   
   .card:hover {
-    transform: translateY(-5px); /* Add a slight hover effect */
+    transform: translateY(-5px);
   }
   
   .card-content {
@@ -38,7 +38,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #007bff;
+    background-color: rgb(67, 115, 168);
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -74,19 +74,19 @@
   }
   
   .larger-font {
-    font-size: 1.8rem; /* Adjust the font size as needed */
+    font-size: 1.8rem; 
   }
   
   .larger-button {
-    font-size: 1.5rem; /* Adjust the font size as needed */
-    padding: 10px 20px; /* Adjust the padding as needed */
+    font-size: 1.5rem; 
+    padding: 10px 20px; 
   }
   
   .badge {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #007bff; /* You can choose your desired badge background color */
+    background-color: rgb(67, 115, 168); 
     color: white;
     padding: 5px 10px;
     border-radius: 4px;

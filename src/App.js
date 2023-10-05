@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import http from './services/HttpServices';
 import "./components/SearchResults.css"
 import SearchResults from "./components/SearchResults";
+import SearchIcon from '@mui/icons-material/Search';
 
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 // import "bootstrap/dist/css/bootstrap.css"
@@ -27,7 +28,7 @@ const localizer = dateFnsLocalizer({
 
 const events = [
     {
-        title: "Big Meeting",
+        title: "Example Event",
         allDay: true,
         start: new Date(2023, 10 - 1, 3),
         end: new Date(2023, 10 - 1, 3),
@@ -45,6 +46,8 @@ function App() {
     const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
     const [allEvents, setAllEvents] = useState(events);
     const [details, setDetails] = useState({});
+    const [location, setLocation] = useState("philadelphia");
+    const [inputVal, setInputVal] = useState("philadelphia");
 
     function handleAddEvent(title, year, month, day) {
 
@@ -75,29 +78,25 @@ function App() {
     }
 
     useEffect(() => {
-      http.get('/')
-      .then(res => {
-          setSearchResults([...res.data]);
-      })
-    }, [])
+      if (location !== "") {
+        http.get(`/?location=${location}`)
+        .then(res => {
+            setSearchResults([...res.data]);
+        })
+      }
+    }, [location])
 
   return (
     <div className="App">
-            <h1>Philly Events</h1>
+            <h1>What's up in 
+              <input type="text" value={inputVal} onChange={e => setInputVal(e.target.value)}/>
+              <button onClick={() => setLocation(inputVal)} style={{fontSize: '50'}}>
+                🔍
+              </button>
+            </h1>
             <div style={{display: 'flex'}}>
               <Calendar localizer={localizer} events={allEvents} startAccessor="start" endAccessor="end" style={{ height: 500, width: '50%', margin: "50px" }} />
-              {searchResults.length === 0 && <div> loading events for you... </div>}
-              <div >
-                <div >
-                    {/* <input type="text" placeholder="Add Title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-                    <DatePicker placeholderText="Start Date" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-                    <DatePicker placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} /> */}
-                    {/* <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
-                        Add Event
-                    </button> */}
-                    <SearchResults results={searchResults} handleAddEvent={handleAddEvent}/>
-                </div>
-              </div>
+              <SearchResults results={searchResults} handleAddEvent={handleAddEvent}/>
             </div>
         </div>
   );
